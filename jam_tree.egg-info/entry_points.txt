@@ -1,0 +1,3 @@
+[console_scripts]
+jam-tree = jam_tree.cli:main
+

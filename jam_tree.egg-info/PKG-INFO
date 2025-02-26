@@ -1,0 +1,47 @@
+Metadata-Version: 2.1
+Name: jam-tree
+Version: 0.1.0
+Summary: Ferramenta para gerar árvore de diretórios com análise de IA
+Home-page: https://github.com/GitHubJordan/jam-tree
+Author: Jordan Adelino
+License: UNKNOWN
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Description-Content-Type: text/markdown
+
+# JAM-Tree
+
+JAM-Tree é uma ferramenta que gera uma árvore de diretórios de um projeto e, futuramente, integrará análise de IA para descrever funcionalidades dos arquivos.
+
+## Funcionalidades Iniciais
+- Escaneamento de diretórios (Directory Scanner)
+- Exibição da árvore formatada no terminal (Output Generator)
+- Exportação para TXT, Markdown e JSON
+- Interface CLI para facilitar o uso
+
+## Instalação
+Para instalar localmente:
+```bash
+pip install -e .
+Após a instalação, utilize o comando:
+
+jam-tree [CAMINHO_DO_PROJETO] [--export {txt,md,json}]
+```
+
+---
+
+### 8. **.gitignore**
+
+pycache / *.pyc ambiente/ venv/
+
+
+---
+
+## 🚀 Próximos Passos
+
+1. **Testar o Directory Scanner:**  
+   Rode o comando abaixo na raiz do projeto para ver a árvore gerada:
+   ```bash
+   python -m jam_tree.directory_scanner .
+
