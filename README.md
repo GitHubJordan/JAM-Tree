@@ -31,6 +31,9 @@ JAM-Tree é uma ferramenta open-source que gera uma árvore de diretórios de um
 - **Interface de Linha de Comando (CLI):**  
   Uso simples e intuitivo com o comando `jam-tree` e opções customizáveis.
 
+- **Criação de Projetos (Bootstrapping):**  
+  Agora é possível criar a estrutura de um novo projeto a partir de um arquivo JSON que define a estrutura desejada, com a opção de criar ou não a pasta raiz.
+
 - **(Futuro) Análise via IA:**  
   Integração de IA para analisar e descrever automaticamente os arquivos.
 
@@ -59,7 +62,7 @@ pip install -e .
 Após a instalação, o comando principal para executar o JAM-Tree é:
 
 ```bash
-jam-tree [PATH] [--export FORMAT] [--ignore DIRETÓRIOS]
+jam-tree [PATH] [--export FORMAT] [--ignore DIRETÓRIOS] [--create ARQUIVO_JSON] [--no-root]
 ```
 
 ### Opções do CLI
@@ -80,10 +83,39 @@ jam-tree [PATH] [--export FORMAT] [--ignore DIRETÓRIOS]
   ```
 
 - **--ignore DIRETÓRIOS**  
-  Permite acrescentar diretórios adicionais a serem ignorados. Os diretórios informados são somados à lista padrão (que já inclui `.git`, `venv` e `__pycache__`).  
+  Permite acrescentar diretórios adicionais a serem ignorados. Os diretórios informados são somados à lista padrão (que já inclui `.git`, `venv`, `__pycache__`, etc.).  
   *Exemplo:*  
   ```bash
   jam-tree . --ignore node_modules,dist
+  ```
+
+- **--create ARQUIVO_JSON**  
+  Cria a estrutura de um novo projeto a partir de um arquivo JSON que define a estrutura desejada.  
+  *Exemplo:*  
+  ```bash
+  jam-tree --create bootstrap.json
+  ```
+  O arquivo JSON deve seguir o seguinte formato:
+  ```json
+  {
+    "nome_projeto": "MeuProjeto",
+    "estrutura": {
+      "src": {
+        "main.py": "",
+        "utils": {}
+      },
+      "docs": {},
+      "tests": {},
+      "README.md": "# MeuProjeto\n\nDescrição do projeto..."
+    }
+  }
+  ```
+
+- **--no-root**  
+  Quando utilizado junto com a opção `--create`, indica que a estrutura deverá ser criada diretamente no diretório atual, sem criar uma pasta raiz com base no campo `"nome_projeto"` do arquivo JSON.
+  *Exemplo:*  
+  ```bash
+  jam-tree --create bootstrap.json --no-root
   ```
 
 - **--help**  
@@ -109,10 +141,22 @@ jam-tree [PATH] [--export FORMAT] [--ignore DIRETÓRIOS]
   jam-tree . --ignore node_modules,dist
   ```
 
+- **Criar um Projeto a partir de um Arquivo JSON (com pasta raiz):**
+
+  ```bash
+  jam-tree --create bootstrap.json
+  ```
+
+- **Criar um Projeto a partir de um Arquivo JSON (usando o diretório atual como raiz):**
+
+  ```bash
+  jam-tree --create bootstrap.json --no-root
+  ```
+
 ## Documentação
 
 A documentação detalhada do CLI encontra-se no arquivo:  
-`docs/CLI_DOCUMENTATION.md`
+*[CLI_DOCUMENTATION.md](docs/CLI_DOCUMENTATION.md)*
 
 ## Contribuindo
 
