@@ -1,0 +1,13 @@
+{
+    "nome_projeto": "MeuProjeto",
+    "estrutura": {
+      "src": {
+        "main.py": "",
+        "utils": {}
+      },
+      "docs": {},
+      "tests": {},
+      "README.md": "# MeuProjeto\n\nDescrição do projeto..."
+    }
+  }
+  

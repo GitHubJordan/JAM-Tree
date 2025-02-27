@@ -2,7 +2,7 @@
 
 ## Visão Geral
 
-O **JAM-Tree** é uma ferramenta de linha de comando que gera a árvore de diretórios de um projeto, com suporte para exportação em diferentes formatos e filtragem de diretórios indesejados. Este documento apresenta os comandos e opções disponíveis na versão CLI do JAM-Tree.
+O **JAM-Tree** é uma ferramenta de linha de comando que gera a árvore de diretórios de um projeto, com suporte para exportação em diferentes formatos, filtragem de diretórios indesejados e, agora, para a criação automática (bootstrapping) de novos projetos a partir de um arquivo JSON definido pelo usuário.
 
 ## Pré-requisitos
 
@@ -22,7 +22,7 @@ pip install -e .
 A sintaxe básica para executar o JAM-Tree é:
 
 ```bash
-jam-tree [PATH] [--export FORMAT] [--ignore DIRETÓRIOS]
+jam-tree [PATH] [--export FORMAT] [--ignore DIRETÓRIOS] [--create ARQUIVO_JSON] [--no-root]
 ```
 
 ### Parâmetros e Opções
@@ -42,19 +42,48 @@ jam-tree [PATH] [--export FORMAT] [--ignore DIRETÓRIOS]
   ```bash
   jam-tree . --export md
   ```  
-  Exporta a árvore para um arquivo Markdown (por padrão, salvo como `project_tree.md`).
+  Exporta a árvore para um arquivo (por padrão, salvo como `project_tree.<ext>`).
 
 - **--ignore DIRETÓRIOS**  
-  Permite adicionar diretórios adicionais a serem ignorados na análise. Essa lista é adicionada à lista padrão de diretórios indesejados (que já inclui: `.git`, `venv` e `__pycache__`).  
-  - Os diretórios devem ser informados separados por vírgula.  
+  Permite adicionar diretórios adicionais a serem ignorados na análise. Essa lista é somada à lista padrão (que já inclui: `.git`, `venv`, `__pycache__`, entre outros).
+  - Os diretórios devem ser informados separados por vírgula.
   **Exemplo:**  
   ```bash
   jam-tree . --ignore node_modules,dist
-  ```  
-  Neste caso, além dos diretórios padrão, serão ignorados os diretórios `node_modules` e `dist`.
+  ```
+
+- **--create ARQUIVO_JSON**  
+  Cria a estrutura de um novo projeto a partir de um arquivo JSON que define a estrutura desejada.  
+  - **Formato esperado do JSON:**
+    ```json
+    {
+      "nome_projeto": "MeuProjeto",
+      "estrutura": {
+        "src": {
+          "main.py": "",
+          "utils": {}
+        },
+        "docs": {},
+        "tests": {},
+        "README.md": "# MeuProjeto\n\nDescrição do projeto..."
+      }
+    }
+    ```
+  **Exemplo:**  
+  ```bash
+  jam-tree --create bootstrap.json
+  ```
+  Neste exemplo, se o campo `"nome_projeto"` estiver definido, uma nova pasta com esse nome será criada contendo a estrutura especificada.
+
+- **--no-root**  
+  Quando utilizado com `--create`, indica que a estrutura deverá ser criada diretamente no diretório atual, sem criar uma pasta raiz baseada no campo `"nome_projeto"` do arquivo JSON.
+  **Exemplo:**  
+  ```bash
+  jam-tree --create bootstrap.json --no-root
+  ```
 
 - **--help**  
-  Exibe uma mensagem de ajuda com informações sobre o uso do comando e suas opções.
+  Exibe a mensagem de ajuda com informações sobre o uso do comando e suas opções.
 
 ## Exemplos de Uso
 
@@ -74,13 +103,7 @@ jam-tree .
 │── <outro_arquivo>
 ```
 
-### 2. Exibir a Árvore de um Projeto Específico
-
-```bash
-jam-tree /caminho/para/o/projeto
-```
-
-### 3. Exportar a Árvore para um Arquivo Markdown
+### 2. Exportar a Árvore para um Arquivo Markdown
 
 ```bash
 jam-tree . --export md
@@ -88,21 +111,29 @@ jam-tree . --export md
 
 Será gerado um arquivo `project_tree.md` contendo a estrutura do projeto.
 
-### 4. Ignorar Diretórios Adicionais
+### 3. Ignorar Diretórios Adicionais
 
 ```bash
 jam-tree . --ignore node_modules,dist
 ```
 
-Neste exemplo, os diretórios `node_modules` e `dist` serão ignorados, além dos diretórios padrão.
+Neste exemplo, além dos diretórios padrão, serão ignorados `node_modules` e `dist`.
 
-### 5. Combinar Exportação e Filtragem de Diretórios
+### 4. Criar um Projeto a partir de um Arquivo JSON (com Pasta Raiz)
 
 ```bash
-jam-tree /caminho/para/o/projeto --export json --ignore node_modules,dist
+jam-tree --create bootstrap.json
 ```
 
-A árvore do projeto será exportada em formato JSON e os diretórios `node_modules` e `dist` serão ignorados.
+Se o arquivo `bootstrap.json` define `"nome_projeto": "MeuProjeto"`, o projeto será criado dentro de uma nova pasta chamada `MeuProjeto`.
+
+### 5. Criar um Projeto a partir de um Arquivo JSON (Usando o Diretório Atual como Raiz)
+
+```bash
+jam-tree --create bootstrap.json --no-root
+```
+
+Neste caso, a estrutura será criada diretamente no diretório atual, sem criar uma pasta raiz separada.
 
 ## Notas Adicionais
 
@@ -110,12 +141,11 @@ A árvore do projeto será exportada em formato JSON e os diretórios `node_modu
   A árvore é exibida com os diretórios listados primeiro (em ordem alfabética), seguidos pelos arquivos.
 
 - **Ignorar Diretórios Indesejados:**  
-  Por padrão, além de `.git`, `venv` e `__pycache__`, diretórios que terminam com `.egg-info` também são ignorados para evitar listagens indesejadas.
+  Além dos diretórios padrão (`.git`, `venv`, `__pycache__`, etc.), o JAM-Tree ignora diretórios que terminam com `.egg-info` para evitar listagens desnecessárias.
 
 ## Conclusão
 
-Esta documentação cobre os principais aspectos do CLI do JAM-Tree. Futuras atualizações poderão adicionar novas funcionalidades ou opções, e este documento será revisado conforme necessário.
-
-Para dúvidas, sugestões ou contribuições, sinta-se à vontade para abrir uma issue no repositório do projeto.
+Esta documentação cobre os principais aspectos do CLI do JAM-Tree, agora incluindo a funcionalidade de bootstrapping para criação automática de projetos. Futuras atualizações poderão adicionar novas funcionalidades, como a integração de IA e o desenvolvimento de uma interface gráfica (GUI).  
+Para dúvidas, sugestões ou contribuições, sinta-se à vontade para abrir uma issue no repositório.
 
 ---

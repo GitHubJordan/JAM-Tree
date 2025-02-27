@@ -1,4 +1,3 @@
-# jam_tree/output_generator.py
 from rich.console import Console
 
 def format_tree(tree: dict, prefix: str = "", is_root: bool = True) -> str:

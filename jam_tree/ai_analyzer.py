@@ -1,4 +1,3 @@
-# jam_tree/ai_analyzer.py
 def analyze_file(content: str) -> str:
     """
     Função placeholder para análise do conteúdo de um arquivo.
