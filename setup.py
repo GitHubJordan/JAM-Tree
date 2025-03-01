@@ -14,7 +14,7 @@ setup(
     ],
     entry_points={
         "console_scripts": [
-            "jam-tree=jam_tree.cli:main",
+            "jam-tree=jam_tree.cli:cli",
         ],
     },
     author="Jordan Adelino",
@@ -28,11 +28,6 @@ setup(
         "Intended Audience :: Developers",
         "Topic :: Software Development :: Build Tools",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.7",
-        "Programming Language :: Python :: 3.8",
-        "Programming Language :: Python :: 3.9",
-        "Programming Language :: Python :: 3.10",
-        "Programming Language :: Python :: 3 :: Only",
         "License :: OSI Approved :: MIT License",
     ],
     keywords="jam-tree, setuptools, development",

@@ -1,14 +1,28 @@
 # JAM-Tree
 
-JAM-Tree é uma ferramenta open-source que gera uma árvore de diretórios de um projeto, facilitando a visualização da estrutura do código. Em futuras versões, o JAM-Tree integrará funcionalidades de análise via IA para descrever automaticamente as funcionalidades dos arquivos e oferecerá uma interface gráfica (GUI).
+**JAM-Tree** é uma ferramenta open-source que gera a árvore completa de diretórios de um projeto – da raiz até as subpastas e arquivos – e a exibe de forma organizada. Além disso, a ferramenta permite:
+
+- **Exportação:**  
+  Exporta a árvore para formatos TXT, Markdown (MD) ou JSON.
+
+- **Criação de Projetos (Bootstrapping):**  
+  Cria a estrutura de um novo projeto a partir de um template JSON, com opção de usar o diretório atual como raiz.
+
+- **Análise com IA:**  
+  Utiliza a API Gemini para gerar resumos concisos (até 64 caracteres) para cada arquivo e diretório. Esses resumos são integrados à árvore, oferecendo uma visão rápida da funcionalidade de cada nó.
+  - O modo **AI Comments** (ativado com `--ai-comments`) anexa automaticamente os resumos a cada nó da árvore.
+  - O subcomando `analyze` realiza uma análise detalhada de um arquivo.
+
+- **Feedback Visual e Barra de Progresso:**  
+  Durante a análise (quando ativada a opção `--progress`), são exibidas mensagens de status e uma barra de progresso para melhorar a experiência do usuário.
 
 ## Tabela de Conteúdos
 
 - [Recursos](#recursos)
 - [Instalação](#instalação)
 - [Uso](#uso)
-  - [Opções do CLI](#opções-do-cli)
-- [Documentação](#documentação)
+  - [Comandos e Opções do CLI](#comandos-e-opções-do-cli)
+- [Documentação Completa](#documentação-completa)
 - [Contribuindo](#contribuindo)
 - [Roadmap](#roadmap)
 - [Licença](#licença)
@@ -16,40 +30,31 @@ JAM-Tree é uma ferramenta open-source que gera uma árvore de diretórios de um
 
 ## Recursos
 
-- **Geração de Árvore de Diretórios:**  
-  Exibe a estrutura do projeto, listando primeiro os diretórios (em ordem alfabética) e depois os arquivos.
+- **Árvore Completa de Diretórios:**  
+  Escaneia recursivamente o diretório do projeto e exibe a estrutura completa, com as pastas listadas antes dos arquivos (em ordem alfabética).
 
-- **Exportação de Resultados:**  
-  Permite exportar a árvore para os formatos:
-  - **TXT**
-  - **Markdown (MD)**
-  - **JSON**
-
-- **Ignoração de Diretórios Indesejados:**  
-  Por padrão, o JAM-Tree ignora diretórios como `.git`, `venv`, `__pycache__` e diretórios que terminam com `.egg-info`. É possível adicionar diretórios adicionais via CLI.
-
-- **Interface de Linha de Comando (CLI):**  
-  Uso simples e intuitivo com o comando `jam-tree` e opções customizáveis.
+- **Exportação da Árvore:**  
+  Permite exportar a árvore para os formatos TXT, MD ou JSON.
 
 - **Criação de Projetos (Bootstrapping):**  
-  Agora é possível criar a estrutura de um novo projeto a partir de um arquivo JSON que define a estrutura desejada, com a opção de criar ou não a pasta raiz.
+  Cria a estrutura de um novo projeto a partir de um template JSON.
 
-- **(Futuro) Análise via IA:**  
-  Integração de IA para analisar e descrever automaticamente os arquivos.
+- **Análise com IA:**  
+  Gera resumos concisos (até 64 caracteres) para cada nó da árvore utilizando a API Gemini.  
+  - **Modo Resumido:** Exibe os resumos na árvore (opção `--ai-comments`).
+  - **Modo Detalhado:** Utiliza o subcomando `analyze` para obter uma explicação completa de um arquivo.
 
-- **(Futuro) Interface Gráfica (GUI):**  
-  Uma interface visual para facilitar a interação com a ferramenta.
+- **Feedback Visual:**  
+  Mensagens de status e uma barra de progresso (opção `--progress`) fornecem feedback interativo durante o escaneamento e análise.
 
 ## Instalação
 
 ### Requisitos
 
 - **Python 3.10+**
-- Bibliotecas: `click` e `rich`
+- Dependências listadas em `requirements.txt` (inclui `click`, `rich`, `google-generativeai`, etc.)
 
 ### Instalação via pip (Modo Desenvolvimento)
-
-Clone o repositório e instale o JAM-Tree em modo de desenvolvimento:
 
 ```bash
 git clone https://github.com/GitHubJordan/jam-tree.git
@@ -57,45 +62,40 @@ cd jam-tree
 pip install -e .
 ```
 
+> **Nota:** Configure a variável de ambiente para a API Gemini:
+> ```bash
+> export AI_ANALYZER_API_KEY_GEMINI="sua_chave_aqui"
+> ```
+> Opcionalmente, você pode definir o modelo de IA a ser utilizado com:
+> ```bash
+> export AI_ANALYZER_MODEL="gemini-1.5-flash"
+> ```
+
 ## Uso
 
-Após a instalação, o comando principal para executar o JAM-Tree é:
+A sintaxe básica do JAM-Tree é:
 
 ```bash
-jam-tree [PATH] [--export FORMAT] [--ignore DIRETÓRIOS] [--create ARQUIVO_JSON] [--no-root]
+jam-tree [PATH] [--export FORMAT] [--ignore DIRETÓRIOS] [--create ARQUIVO_JSON] [--no-root] [--ai-comments] [--progress]
 ```
 
-### Opções do CLI
+### Comandos e Opções do CLI
 
-- **PATH** (argumento posicional)  
-  Define o caminho do projeto a ser escaneado.  
-  - *Exemplo:* `jam-tree .` (escaneia o diretório atual).  
-  - Se não especificado, o diretório atual (`.`) é utilizado.
-
-- **--export FORMAT**  
-  Exporta a árvore gerada para um arquivo. Formatos disponíveis:
-  - `txt` — Arquivo de texto.
-  - `md` — Arquivo Markdown.
-  - `json` — Arquivo JSON.  
-  *Exemplo:*  
+- **Fluxo Padrão (Escaneamento):**  
   ```bash
-  jam-tree . --export md
+  jam-tree .
   ```
+  Exibe a árvore completa do projeto, da raiz até as subpastas e arquivos.
 
-- **--ignore DIRETÓRIOS**  
-  Permite acrescentar diretórios adicionais a serem ignorados. Os diretórios informados são somados à lista padrão (que já inclui `.git`, `venv`, `__pycache__`, etc.).  
-  *Exemplo:*  
-  ```bash
-  jam-tree . --ignore node_modules,dist
-  ```
+- **Opção `--export FORMAT`:**  
+  Exporta a árvore para `txt`, `md` ou `json`.
 
-- **--create ARQUIVO_JSON**  
-  Cria a estrutura de um novo projeto a partir de um arquivo JSON que define a estrutura desejada.  
-  *Exemplo:*  
-  ```bash
-  jam-tree --create bootstrap.json
-  ```
-  O arquivo JSON deve seguir o seguinte formato:
+- **Opção `--ignore DIRETÓRIOS`:**  
+  Permite ignorar diretórios adicionais (além dos padrões).
+
+- **Opção `--create ARQUIVO_JSON`:**  
+  Cria a estrutura do projeto a partir de um template JSON.  
+  Exemplo de template:
   ```json
   {
     "nome_projeto": "MeuProjeto",
@@ -111,80 +111,42 @@ jam-tree [PATH] [--export FORMAT] [--ignore DIRETÓRIOS] [--create ARQUIVO_JSON]
   }
   ```
 
-- **--no-root**  
-  Quando utilizado junto com a opção `--create`, indica que a estrutura deverá ser criada diretamente no diretório atual, sem criar uma pasta raiz com base no campo `"nome_projeto"` do arquivo JSON.
-  *Exemplo:*  
+- **Opção `--no-root`:**  
+  Quando usada com `--create`, utiliza o diretório atual como raiz, sem criar uma nova pasta.
+
+- **Opção `--ai-comments`:**  
+  Adiciona resumos gerados por IA a cada nó (arquivos e diretórios) da árvore, conforme a estrutura definida.
+
+- **Opção `--progress`:**  
+  Exibe uma barra de progresso durante a análise dos nós (usada em conjunto com `--ai-comments`).
+
+- **Subcomando `analyze`:**  
   ```bash
-  jam-tree --create bootstrap.json --no-root
+  jam-tree . analyze caminho/do/arquivo.py
   ```
+  Realiza uma análise detalhada do arquivo, retornando uma explicação completa.
 
-- **--help**  
-  Exibe a mensagem de ajuda do CLI.
+## Documentação Completa
 
-### Exemplos de Uso
-
-- **Exibir a árvore do diretório atual:**
-
-  ```bash
-  jam-tree .
-  ```
-
-- **Exportar a árvore para Markdown:**
-
-  ```bash
-  jam-tree . --export md
-  ```
-
-- **Ignorar diretórios adicionais:**
-
-  ```bash
-  jam-tree . --ignore node_modules,dist
-  ```
-
-- **Criar um Projeto a partir de um Arquivo JSON (com pasta raiz):**
-
-  ```bash
-  jam-tree --create bootstrap.json
-  ```
-
-- **Criar um Projeto a partir de um Arquivo JSON (usando o diretório atual como raiz):**
-
-  ```bash
-  jam-tree --create bootstrap.json --no-root
-  ```
-
-## Documentação
-
-A documentação detalhada do CLI encontra-se no arquivo:  
-*[CLI_DOCUMENTATION.md](docs/CLI_DOCUMENTATION.md)*
+Consulte a [CLI_DOCUMENTATION.md](docs/CLI_DOCUMENTATION.md) para detalhes completos sobre os comandos, opções e exemplos de uso.
 
 ## Contribuindo
 
-Contribuições são bem-vindas! Para colaborar:
-
-1. Faça um fork do repositório.
-2. Crie uma branch para sua funcionalidade ou correção.
-3. Realize os commits com mensagens claras e descritivas.
-4. Envie um pull request com uma descrição detalhada das mudanças.
-5. Verifique se os seus commits seguem as boas práticas do projeto e que os testes estão passando.
-
-Consulte o arquivo [CONTRIBUTING.md](CONTRIBUTING.md) para mais informações.
+Contribuições são bem-vindas! Veja o arquivo [CONTRIBUTING.md](CONTRIBUTING.md) para informações sobre como colaborar.
 
 ## Roadmap
 
-Os próximos passos planejados para o projeto incluem:
-
-- **Integração de IA:**  
-  Desenvolver o módulo de análise via IA para descrever automaticamente a funcionalidade dos arquivos.
-
-- **Interface Gráfica (GUI):**  
-  Criar uma GUI utilizando frameworks como Flet ou PyQt para melhorar a experiência do usuário.
-
-- **Melhorias no CLI:**  
-  Acrescentar novas opções para filtragem e ordenação da árvore, entre outras melhorias.
-
-- **Testes Automatizados:**  
-  Implementar uma suíte de testes para garantir a qualidade e estabilidade do código.
+Próximos passos planejados:
+- **Aprimoramento do AI Analyzer:**  
+  Refinar os prompts, melhorar o tratamento de erros (e evitar cache de erros) e implementar um cache persistente.
+- **Desenvolvimento de Interface Gráfica (GUI):**  
+  Criar uma GUI para facilitar a visualização e análise de projetos.
+- **Testes Automatizados e CI/CD:**  
+  Ampliar a suíte de testes e configurar pipelines de integração contínua.
+- **Exportação para Novos Formatos:**  
+  Explorar a exportação para HTML e XML.
+- **Integração de Configuração via Arquivo:**  
+  Permitir definir opções (como diretórios a ignorar e modelo de IA) através de um arquivo de configuração.
 
 ## Licença
 
@@ -192,8 +154,10 @@ Este projeto está licenciado sob a [MIT License](LICENSE).
 
 ## Contato
 
-Para dúvidas, sugestões ou contribuições, abra uma issue no repositório ou entre em contato através do GitHub.
+Para dúvidas, sugestões ou contribuições, abra uma issue no repositório ou entre em contato via GitHub.
 
 ---
 
-JAM-Tree é um projeto em constante evolução. Agradecemos sua contribuição e feedback para tornar essa ferramenta ainda melhor!
+JAM-Tree é um projeto em constante evolução. Agradecemos seu feedback e contribuições para tornar essa ferramenta cada vez melhor!
+
+---
