@@ -1,40 +1,69 @@
-from rich.console import Console
+def sort_key(item):
+    """
+    Retorna uma chave para ordenação:
+      - Diretórios (nós que possuem "children") recebem prioridade 0.
+      - Arquivos (nós com "type" == "file") recebem prioridade 1.
+    A ordenação interna é feita de forma alfabética, ignorando maiúsculas/minúsculas.
+    """
+    name, value = item
+    if isinstance(value, dict):
+        if "children" in value:
+            return (0, name.lower())
+        if "type" in value and value["type"] == "file":
+            return (1, name.lower())
+        # Caso não esteja anotado, trata como diretório por padrão
+        return (0, name.lower())
+    return (1, name.lower())
 
 def format_tree(tree: dict, prefix: str = "", is_root: bool = True) -> str:
     """
-    Converte recursivamente a estrutura em árvore (dicionário) em uma string formatada,
-    listando primeiro os diretórios e depois os arquivos.
+    Converte recursivamente a estrutura em árvore em uma string formatada.
     
-    :param tree: Dicionário representando a árvore.
-    :param prefix: Prefixo para indentação.
-    :param is_root: Flag para identificar se estamos no primeiro nível.
-    :return: String com a árvore formatada.
+    A estrutura pode ser:
+      - Não anotada: diretórios são dicionários e arquivos são representados pela string "file".
+      - Anotada: para arquivos, { "type": "file", "comment": <comentário> };
+                   para diretórios, { "children": { ... }, "comment": <comentário> }.
+    
+    Diretórios são listados primeiro (prioridade 0) e, em seguida, os arquivos (prioridade 1),
+    ambos em ordem alfabética.
+    Se houver um comentário, ele é exibido ao lado do nome do nó.
     """
     lines = []
-    # Ordena: diretórios primeiro (valor é dict) e, depois, arquivos; em ordem alfabética.
-    items = sorted(tree.items(), key=lambda item: (0 if isinstance(item[1], dict) else 1, item[0].lower()))
+    items = sorted(tree.items(), key=sort_key)
     
-    for index, (name, content) in enumerate(items):
+    for index, (name, value) in enumerate(items):
         is_last = (index == len(items) - 1)
-        if is_root:
-            # No primeiro nível, usamos o prefixo "│── " conforme desejado.
-            line = f"│── {name}" + ("/" if isinstance(content, dict) else "")
+        connector = "└── " if is_last else "├── "
+        
+        if isinstance(value, dict):
+            if "type" in value and value["type"] == "file":
+                # Nó de arquivo anotado
+                comment = value.get("comment", "")
+                line = f"{prefix}{connector}{name}                # {comment}"
+            else:
+                # Nó de diretório (anotado ou não)
+                comment = value.get("comment", "") if "children" in value else ""
+                line = f"{prefix}{connector}{name}/"
+                if comment:
+                    line += f"                # {comment}"
         else:
-            connector = "└── " if is_last else "├── "
-            line = prefix + connector + name + ("/" if isinstance(content, dict) else "")
+            line = f"{prefix}{connector}{name}"
         lines.append(line)
-        if isinstance(content, dict):
-            extension = "    " if is_last else "│   "
-            sub_tree = format_tree(content, prefix + extension, is_root=False)
-            if sub_tree:
-                lines.append(sub_tree)
+        
+        # Se for um diretório, processa recursivamente seus filhos
+        if isinstance(value, dict):
+            children = value.get("children", value)
+            if not (isinstance(value, dict) and "type" in value and value["type"] == "file"):
+                extension = "    " if is_last else "│   "
+                sub_tree = format_tree(children, prefix + extension, is_root=False)
+                if sub_tree:
+                    lines.append(sub_tree)
     return "\n".join(lines)
 
 def print_tree(tree: dict, root_name: str = "") -> str:
     """
     Retorna uma string representando a árvore do projeto formatada.
-    
-    Se root_name for fornecido, ele será exibido como o diretório principal.
+    Se root_name for fornecido, ele é exibido como o diretório principal.
     """
     output = ""
     if root_name:
@@ -45,11 +74,6 @@ def print_tree(tree: dict, root_name: str = "") -> str:
 def export_tree(tree: dict, format: str, filename: str = "project_tree", root_name: str = ""):
     """
     Exporta a árvore para um arquivo nos formatos TXT, Markdown ou JSON.
-    
-    :param tree: Estrutura em árvore (dicionário).
-    :param format: Formato de exportação ('txt', 'md', 'json').
-    :param filename: Nome base do arquivo exportado.
-    :param root_name: Nome do diretório principal.
     """
     tree_str = print_tree(tree, root_name)
     if format == "txt":
