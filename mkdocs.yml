@@ -1,0 +1,23 @@
+site_name: JAM-Tree Documentation
+site_url: https://www.jordanadelino.info
+site_author: Jordan Adelino
+theme:
+  name: readthedocs
+  language: pt
+nav:
+  - Home: index.md
+  - CLI Documentation: 
+      - Overview: CLI_DOCUMENTATION.md
+  - Tutorial: Tutorial.md
+  - Developer Docs: Developer_Docs.md
+  - Configuração: config.md
+  - FAQ: faq.md
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/GitHubJordan/JAM-Tree
+markdown_extensions:
+  - admonition
+  - codehilite
+  - toc:
+      permalink: True

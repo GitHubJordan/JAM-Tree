@@ -5,6 +5,8 @@ import json
 import atexit
 import google.generativeai as genai
 from typing import Dict
+from .config import get_config_option  # Importe a função do seu config.py
+
 
 # Arquivo de cache persistente (na raiz do projeto)
 CACHE_FILE = ".jam_tree_cache.json"
@@ -33,26 +35,34 @@ def get_content_hash(content: str) -> str:
     return hashlib.md5(content.encode('utf-8')).hexdigest()
 
 def clean_summary(text: str) -> str:
+    # Remove blocos de código entre ```...```
     text = re.sub(r'```.*?```', '', text, flags=re.DOTALL)
     text = " ".join(text.split())
     if len(text) > 64:
         text = text[:61] + "..."
     return text
 
-def get_model(default: str) -> str:
-    return os.getenv("AI_ANALYZER_MODEL", default)
+def get_model():
+    """Recupera e instancia o modelo Gemini configurado."""
+    model_choice = get_config_option("ai_model.default", "gemini-1.5-flash")
+    api_key = os.getenv("AI_ANALYZER_API_KEY_GEMINI")
+
+    if not api_key:
+        raise ValueError("Chave da API Gemini não configurada.")
+
+    genai.configure(api_key=api_key)
+    return genai.GenerativeModel(model_choice)
 
 def analyze_file(content: str) -> str:
     key = get_content_hash(content)
-    # Se o cache já contém um resultado válido, retorne-o.
+    # Verifica se já existe um resultado válido no cache
     if key in _cache:
         cached_result = _cache[key]
-        # Se o resultado armazenado é um erro, reanalisar
-        if cached_result.startswith("Erro na análise AI"):
-            pass
+        if cached_result.startswith("Erro na análise AI") or cached_result == "N/A":
+            pass  # Reanalisa se for erro
         else:
             return cached_result
-    
+
     api_key = os.getenv("AI_ANALYZER_API_KEY_GEMINI")
     if not api_key:
         return "Chave da API Gemini não configurada."
@@ -74,14 +84,14 @@ def analyze_file(content: str) -> str:
         response = model.generate_content(prompt)
         if response and hasattr(response, "text") and response.text:
             summary = clean_summary(response.text.strip())
-            if summary.startswith("Erro na análise AI") or "429 Resource has been exhausted (e.g. check quota)." in summary:
+            if summary.startswith("Erro na análise AI") or "429 Resource has been exhausted" in summary:
                 summary = "N/A"
         else:
             summary = "Sem resumo."
     except Exception as e:
         summary = f"Erro na análise AI: {e}"
     
-    # Só armazena no cache se o resultado não for um erro.
+    # Só armazena se o resultado não for um erro
     if not summary.startswith("Erro na análise AI"):
         _cache[key] = summary
     return summary
@@ -94,14 +104,13 @@ def analyze_node(name: str, is_dir: bool) -> str:
             pass
         else:
             return cached_result
-    
+
     api_key = os.getenv("AI_ANALYZER_API_KEY_GEMINI")
     if not api_key:
         return "Chave da API Gemini não configurada."
     
-    genai.configure(api_key=api_key)
-    model_name = get_model("gemini-1.5-flash")
-    model = genai.GenerativeModel(model_name)
+    # Exemplo de como usar a função get_model
+    model = get_model()
     
     try:
         if is_dir:
@@ -119,7 +128,7 @@ def analyze_node(name: str, is_dir: bool) -> str:
         response = model.generate_content(prompt)
         if response and hasattr(response, "text") and response.text:
             summary = clean_summary(response.text.strip())
-            if summary.startswith("Erro na análise AI") or "429 Resource has been exhausted (e.g. check quota)." in summary:
+            if summary.startswith("Erro na análise AI") or "429 Resource has been exhausted" in summary:
                 summary = "N/A"
         else:
             summary = "Sem descrição."
@@ -135,9 +144,8 @@ def analyze_file_detailed(content: str) -> str:
     if not api_key:
         return "Chave da API Gemini não configurada."
     
-    genai.configure(api_key=api_key)
-    model_name = get_model("gemini-1.5-pro")
-    model = genai.GenerativeModel(model_name)
+    # Exemplo de como usar a função get_model
+    model = get_model()
     
     try:
         prompt = f"""
