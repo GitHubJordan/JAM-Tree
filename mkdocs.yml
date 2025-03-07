@@ -18,6 +18,7 @@ nav:
   - Developer Docs: 
     - For Developer: Developer_Docs.md
     - Contributing: CONTRIBUTING.md
+    - Code of ConduCt: CODE_OF_CONDUCT.md
   - Configuração: config.md
   - FAQ: faq.md
 extra:

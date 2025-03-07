@@ -78,7 +78,7 @@ Certifique-se de que todas as dependências estejam instaladas e que as variáve
 - Adicione testes para novas funcionalidades ou correções.
 - Verifique se a documentação está atualizada.
 
-Consulte [CONTRIBUTING.md](../CONTRIBUTING.md) para mais detalhes.
+Consulte [CONTRIBUTING.md](CONTRIBUTING.md) para mais detalhes.
 
 ## 5. Roadmap
 
