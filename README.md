@@ -220,7 +220,7 @@ Contribuições são muito bem-vindas! Para colaborar:
 2. Crie uma branch para sua funcionalidade ou correção.
 3. Realize commits com mensagens claras e detalhadas.
 4. Envie um pull request com uma descrição completa das mudanças.
-5. Consulte [CONTRIBUTING.md](CONTRIBUTING.md) para mais orientações.
+5. Consulte [CONTRIBUTING.md](docs/CONTRIBUTING.md) para mais orientações.
 
 ---
 
