@@ -1,9 +1,12 @@
 site_name: JAM-Tree Documentation
 site_url: https://jam-tree.readthedocs.io/
+repo_url: https://github.com/GitHubJordan/JAM-Tree
+repo_name: GitHubJordan/JAM-Tree
+edit_uri: tree/main/docs
 site_author: Jordan Adelino
 theme:
-  name: readthedocs
-  language: pt
+  name: material
+  language: pt-BR
   logo: img/jam-tree_logo_sem_fundo.png
   favicon: img/jam-tree_favicon/favicon.ico
 nav:
