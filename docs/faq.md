@@ -33,7 +33,7 @@ Se ocorrer um erro (por exemplo, devido a limites de quota ou problemas de rede)
 Você pode personalizar configurações importantes (como diretórios a ignorar ou o modelo de IA) utilizando um arquivo de configuração chamado `config.json`. Consulte a seção de Configuração da documentação para mais detalhes.
 
 ## 8. Onde posso obter suporte ou contribuir para o projeto?
-Para suporte, sugestões ou reportar bugs, abra uma issue no [repositório do JAM-Tree](https://github.com/GitHubJordan/JAM-Tree/issues). Se desejar contribuir, consulte as diretrizes em [CONTRIBUTING.md](../CONTRIBUTING.md).
+Para suporte, sugestões ou reportar bugs, abra uma issue no [repositório do JAM-Tree](https://github.com/GitHubJordan/JAM-Tree/issues). Se desejar contribuir, consulte as diretrizes em [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ---
 
