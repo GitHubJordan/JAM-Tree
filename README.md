@@ -3,6 +3,8 @@
 </div>
 
 # JAM-Tree
+![CI](https://github.com/GitHubJordan/JAM-Tree/actions/workflows/ci.yml/badge.svg)
+[![Documentation Status](https://readthedocs.org/projects/jam-tree/badge/?version=latest&style=flat)](ttps://jam-tree.readthedocs.io/pt-br/latest/badge=latest)
 
 **JAM-Tree** é uma ferramenta open-source que gera a árvore completa de diretórios de um projeto – da raiz até as subpastas e arquivos – e a exibe de forma organizada. Além disso, ela permite exportar a estrutura para diversos formatos, criar projetos a partir de um template JSON (bootstrapping) e realizar análises de código com IA para gerar resumos concisos.
 
