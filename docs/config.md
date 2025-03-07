@@ -51,10 +51,59 @@ O módulo `config.py` do JAM-Tree é responsável por carregar automaticamente a
 Você pode editar o `config.json` conforme suas necessidades. Por exemplo, se desejar ignorar diretórios adicionais, basta incluir os nomes na lista:
 
 ```json
+```json
 {
-  "ignore_dirs": [".git", "venv", "__pycache__", "node_modules", "dist"],
-  "ai_model": "gemini-1.5-flash",
-  "export_format": "md"
+  "ignore_dirs": [".git", "venv", "__pycache__"],
+  "ai_model": {
+    "default": "gemini-1.5-flash",
+    "models": [
+      {
+        "nome": "gemini-1.5-pro",
+        "configuracoes": {
+          "temperature": 0.7,
+          "max_output_tokens": 1024,
+          "top_k": 40,
+          "top_p": 0.95
+        },
+        "disponibilidade": "Google One AI Premium",
+        "descricao": "Tarefas de raciocínio complexas."
+      },
+      {
+        "nome": "gemini-1.5-flash",
+        "configuracoes": {
+          "temperature": 0.5,
+          "max_output_tokens": 512,
+          "top_k": 20,
+          "top_p": 0.8
+        },
+        "disponibilidade": "Gratuito",
+        "descricao": "Respostas rápidas e versáteis."
+      },
+      {
+        "nome": "gemini-2.0-flash",
+        "configuracoes": {
+          "temperature": 0.6,
+          "max_output_tokens": 768,
+          "top_k": 30,
+          "top_p": 0.9
+        },
+        "disponibilidade": "Gratuito",
+        "descricao": "Geração multimodal e recursos avançados."
+      },
+      {
+        "nome": "gemini-2.0-flash-lite",
+        "configuracoes": {
+          "temperature": 0.4,
+          "max_output_tokens": 256,
+          "top_k": 10,
+          "top_p": 0.75
+        },
+        "disponibilidade": "Gratuito",
+        "descricao": "Baixa latência e custo eficiente."
+      }
+    ]
+  },
+  "export_format": "txt"
 }
 ```
 

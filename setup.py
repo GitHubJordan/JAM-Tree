@@ -26,6 +26,9 @@ setup(
     url="https://github.com/GitHubJordan/JAM-Tree",
     classifiers=[
         "Development Status :: 5 - Production/Stable",
+        "Environment :: Console",
+        "Natural Language :: Portuguese (Brazilian)",
+        "Intended Audience :: End Users/Desktop",
         "Intended Audience :: Developers",
         "Topic :: Software Development :: Build Tools :: Framework",
         "Programming Language :: Python :: 3.8",
@@ -33,9 +36,9 @@ setup(
         "Programming Language :: Python :: 3.10",
         "License :: OSI Approved :: MIT License",
     ],
-    keywords="jam-tree, setuptools, development",
+    keywords="jam-tree, setuptools, development, ai, analyzer, tree, directory, framework",
     project_urls={
-        "Documentation": "",
+        "Documentation": "https://jam-tree.readthedocs.io/",
         "Bug Reports": "https://github.com/GitHubJordan/JAM-Tree/issues",
         "Funding": "https://airtm.me/jordan_adelino",
         "Say Thanks!": "https://jordanadelino.info",

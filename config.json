@@ -1,53 +1,53 @@
 {
-    "ignore_dirs": [".git", "venv", "__pycache__"],
-    "ai_model": {
-      "default": "gemini-1.5-flash",
-      "models": [
-        {
-          "nome": "gemini-1.5-pro",
-          "configuracoes": {
-            "temperature": 0.7,
-            "max_output_tokens": 1024,
-            "top_k": 40,
-            "top_p": 0.95
-          },
-          "disponibilidade": "Google One AI Premium",
-          "descricao": "Tarefas de raciocínio complexas que exigem mais inteligência."
+  "ignore_dirs": [".git", "venv", "__pycache__"],
+  "ai_model": {
+    "default": "gemini-1.5-flash",
+    "models": [
+      {
+        "nome": "gemini-1.5-pro",
+        "configuracoes": {
+          "temperature": 0.7,
+          "max_output_tokens": 1024,
+          "top_k": 40,
+          "top_p": 0.95
         },
-        {
-          "nome": "gemini-1.5-flash",
-          "configuracoes": {
-            "temperature": 0.5,
-            "max_output_tokens": 512,
-            "top_k": 20,
-            "top_p": 0.8
-          },
-          "disponibilidade": "Gratuito",
-          "descricao": "Ideal para tarefas que exigem respostas rápidas e versáteis."
+        "disponibilidade": "Google One AI Premium",
+        "descricao": "Tarefas de raciocínio complexas que exigem mais inteligência."
+      },
+      {
+        "nome": "gemini-1.5-flash",
+        "configuracoes": {
+          "temperature": 0.5,
+          "max_output_tokens": 512,
+          "top_k": 20,
+          "top_p": 0.8
         },
-        {
-          "nome": "gemini-2.0-flash",
-          "configuracoes": {
-            "temperature": 0.6,
-            "max_output_tokens": 768,
-            "top_k": 30,
-            "top_p": 0.9
-          },
-          "disponibilidade": "Gratuito",
-          "descricao": "Geração multimodal e recursos avançados para diversas tarefas."
+        "disponibilidade": "Gratuito",
+        "descricao": "Ideal para tarefas que exigem respostas rápidas e versáteis."
+      },
+      {
+        "nome": "gemini-2.0-flash",
+        "configuracoes": {
+          "temperature": 0.6,
+          "max_output_tokens": 768,
+          "top_k": 30,
+          "top_p": 0.9
         },
-        {
-          "nome": "gemini-2.0-flash-lite",
-          "configuracoes": {
-            "temperature": 0.4,
-            "max_output_tokens": 256,
-            "top_k": 10,
-            "top_p": 0.75
-          },
-          "disponibilidade": "Gratuito",
-          "descricao": "Otimizado para eficiência de custo e baixa latência."
-        }
-      ]
-    },
-    "export_format": "txt"
-  }
+        "disponibilidade": "Gratuito",
+        "descricao": "Geração multimodal e recursos avançados para diversas tarefas."
+      },
+      {
+        "nome": "gemini-2.0-flash-lite",
+        "configuracoes": {
+          "temperature": 0.4,
+          "max_output_tokens": 256,
+          "top_k": 10,
+          "top_p": 0.75
+        },
+        "disponibilidade": "Gratuito",
+        "descricao": "Otimizado para eficiência de custo e baixa latência."
+      }
+    ]
+  },
+  "export_format": "txt"
+}

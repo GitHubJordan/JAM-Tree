@@ -80,6 +80,12 @@ Para adicionar resumos gerados por IA a cada nó:
 jam-tree --ai-comments
 ```
 
+#### Exportar Árvore com Resumo Conciso
+Você pode tambem exportar a árvore com o resumo conciso para um formato de exportação
+```bash
+jam-tree --ai-comments --export txt
+```
+
 ### Análise Detalhada de um Arquivo
 Para analisar um arquivo e obter uma explicação completa:
 ```bash

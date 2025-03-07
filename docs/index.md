@@ -1,3 +1,6 @@
+<div classe="img_logo" style="background-color:#09152A">
+<img src="img/jam-tree_logo_sem_fundo.png" alt="Logo do Projeto" width="400" style="display: block; margin-left: auto; margin-right: auto;" />
+</div>
 # Bem-vindo ao JAM-Tree
 
 O **JAM-Tree** é uma ferramenta open-source desenvolvida para gerar a árvore completa de diretórios de um projeto – da raiz até os arquivos – de forma organizada e interativa. Ela oferece funcionalidades que vão desde a exportação da estrutura para diferentes formatos até a análise de código com IA, auxiliando tanto usuários finais quanto desenvolvedores.
