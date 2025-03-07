@@ -99,7 +99,7 @@ Consulte [CONTRIBUTING.md](../CONTRIBUTING.md) para mais detalhes.
 ## 6. Outras Informações
 
 - **Documentação e Suporte:**  
-  Consulte a documentação completa em [Read the Docs](https://readthedocs.org/) (a ser configurada).
+  Consulte a documentação completa em [Read the Docs](https://jam-tree.readthedocs.io/)
 - **Comunidade:**  
   Para dúvidas, sugestões ou reportar bugs, abra uma [issue](https://github.com/GitHubJordan/JAM-Tree/issues) no repositório.
 

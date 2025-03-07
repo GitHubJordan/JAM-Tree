@@ -14,6 +14,9 @@ def load_config():
             _config = {}
 
 def get_config_option(key: str, default=None):
-    return _config.get(key, default)
+    config_value = _config.get(key, default)
+    if isinstance(config_value, list) and isinstance(default, list):
+        return config_value + default
+    return config_value
 
 load_config()

@@ -67,9 +67,7 @@ def analyze_file(content: str) -> str:
     if not api_key:
         return "Chave da API Gemini não configurada."
     
-    genai.configure(api_key=api_key)
-    model_name = get_model("gemini-1.5-flash")
-    model = genai.GenerativeModel(model_name)
+    model = get_model()
     
     try:
         prompt = f"""
@@ -109,7 +107,6 @@ def analyze_node(name: str, is_dir: bool) -> str:
     if not api_key:
         return "Chave da API Gemini não configurada."
     
-    # Exemplo de como usar a função get_model
     model = get_model()
     
     try:
@@ -144,7 +141,6 @@ def analyze_file_detailed(content: str) -> str:
     if not api_key:
         return "Chave da API Gemini não configurada."
     
-    # Exemplo de como usar a função get_model
     model = get_model()
     
     try:

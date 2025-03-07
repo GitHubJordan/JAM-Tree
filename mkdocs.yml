@@ -4,6 +4,8 @@ site_author: Jordan Adelino
 theme:
   name: readthedocs
   language: pt
+  logo: img/jam-tree_logo_sem_fundo.png
+  favicon: img/jam-tree_favicon/favicon.ico
 nav:
   - Home: index.md
   - CLI Documentation: 
@@ -21,3 +23,8 @@ markdown_extensions:
   - codehilite
   - toc:
       permalink: True
+plugins:
+  - search  # Adiciona funcionalidade de busca
+  # - minify  # Minifica os arquivos HTML para melhorar a performance
+extra_css:
+  - css/style.css
