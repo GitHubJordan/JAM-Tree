@@ -10,8 +10,11 @@ nav:
   - Home: index.md
   - CLI Documentation: 
       - Overview: CLI_DOCUMENTATION.md
-  - Tutorial: Tutorial.md
-  - Developer Docs: Developer_Docs.md
+  - Tutorial:
+    - Overview: Tutorial.md
+  - Developer Docs: 
+    - For Developer: Developer_Docs.md
+    - Contributing: CONTRIBUTING.md
   - Configuração: config.md
   - FAQ: faq.md
 extra:
