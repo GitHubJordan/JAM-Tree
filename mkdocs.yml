@@ -6,7 +6,7 @@ edit_uri: tree/main/docs
 site_author: Jordan Adelino
 theme:
   name: material
-  language: pt-BR
+  language: pt
   logo: img/jam-tree_logo_sem_fundo.png
   favicon: img/jam-tree_favicon/favicon.ico
 nav:
